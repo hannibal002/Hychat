@@ -6,8 +6,8 @@
 
 [![discord badge](https://img.shields.io/discord/516977525906341928?label=discord&color=9089DA&logo=discord&style=for-the-badge)](https://discord.gg/moulberry)
 [![made with java](https://img.shields.io/badge/Made%20With-Java-orange?style=for-the-badge&logo=java&logocolor=white)](https://www.java.com/)
-[![line count](https://img.shields.io/tokei/lines/github/Tyman/HyChat?style=for-the-badge&logo=github&logocolor=white)](https://github.com/Moulberry/Hychat)
-[![workflow status](https://img.shields.io/github/workflow/status/Tyman/Hychat/JSON/master?label=Workflow%20status&style=for-the-badge&logo=github&logocolor=white)](https://github.com/Moulberry/Hychat)
+[![line count](https://img.shields.io/tokei/lines/github/TymanWasTaken/HyChat?style=for-the-badge&logo=github&logocolor=white)](https://github.com/TymanWasTaken/Hychat)
+[![workflow status](https://img.shields.io/github/workflow/status/TymanWasTaken/Hychat/Build/master?label=Workflow%20status&style=for-the-badge&logo=github&logocolor=white)](https://github.com/TymanWasTaken/Hychat)
 </div>
 
 Hychat is a beta mod developed by Moulberry to improve chat on hypixel. It is in beta so expect bugs.
