@@ -14,9 +14,11 @@ import io.github.moulberry.hychat.core.util.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.BufferUtils;
@@ -395,6 +397,14 @@ public class GuiChatArray extends Gui {
                                 MiscUtils.copyToClipboard(chatline.getFullLine().getFormattedText());
                                 startTextPopup("Copied formatted to clipboard", x+chatWidth-3, top+1);
                             } else if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if (!OpenGlHelper.isFramebufferEnabled()) {
+                                    startTextPopup("Failed to copy SS",
+                                            x+chatWidth-3, top+1);
+                                    Minecraft.getMinecraft().thePlayer.addChatMessage(
+                                            new ChatComponentText(EnumChatFormatting.RED + "[HyChat] Couldn't create screenshot as framebuffers are currently disabled. The most common reason for this is optifine fast render.")
+                                    );
+                                    return;
+                                }
                                 screenshotLine(chatline.getFullLine());
                                 startTextPopup("Copied SS to clipboard",
                                         x+chatWidth-3, top+1);
@@ -419,6 +429,14 @@ public class GuiChatArray extends Gui {
                             activeGuiElement = new ColourWheel(mouseX, mouseY, chatBox.getBackgroundColour(),
                                 chatBox::setBackgroundColour, () -> this.activeGuiElement = null);
                         } else if(mouseY >= top+(lineHeight+1)*2 && mouseY <= top+lineHeight+(lineHeight+1)*2) {
+                            if (!OpenGlHelper.isFramebufferEnabled()) {
+                                startTextPopup("Failed to copy chat SS",
+                                        x+chatWidth-3, top+1);
+                                Minecraft.getMinecraft().thePlayer.addChatMessage(
+                                        new ChatComponentText(EnumChatFormatting.RED + "[HyChat] Couldn't create screenshot as framebuffers are currently disabled. The most common reason for this is optifine fast render.")
+                                );
+                                return;
+                            }
                             screenshotChat(chatLinesWrapped, scrollPos);
                             startTextPopup("Copied chat SS to clipboard", mouseX, mouseY);
                         } else if(mouseY >= top+(lineHeight+1)*3 && mouseY <= top+lineHeight+(lineHeight+1)*3) {
