@@ -5,7 +5,6 @@ import io.github.moulberry.hychat.HyChat;
 import io.github.moulberry.hychat.core.util.StringUtils;
 import io.github.moulberry.hychat.gui.GuiChatTabBar;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.GuiUtilRenderComponents;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.*;
@@ -23,6 +22,7 @@ public class ChatTab {
     @Expose private boolean alwaysMatch = false;
     @Expose private final List<String> regexMatchS = new ArrayList<>();
     @Expose private final List<String> regexIgnoreS = new ArrayList<>();
+    @Expose private final List<String> plainCheck = new ArrayList<>();
 
     private boolean recompileRegex = true;
     private List<Pattern> regexMatch = null;
@@ -305,7 +305,15 @@ public class ChatTab {
     }
 
     public IChatComponent processChatComponent(IChatComponent chatComponent) {
+        String lineString = chatComponent.getFormattedText();
         if(alwaysMatch) {
+            //noinspection ConstantConditions
+            for (ChatTab tab : HyChat.getInstance().getChatManager().getPrimaryChatBox().tabBar.getTabs()) {
+                if (tab.plainCheck(lineString)) {
+                    return null;
+                }
+            }
+
             return chatComponent.createCopy();
         }
 
@@ -313,7 +321,6 @@ public class ChatTab {
             compileRegexes();
         }
 
-        String lineString = chatComponent.getFormattedText();
 
         for(Pattern ignore : regexIgnore) {
             if(ignore.matcher(lineString).matches()) {
@@ -342,6 +349,12 @@ public class ChatTab {
             }
         }
 
+        if (!plainCheck.isEmpty()) {
+            if (!plainCheck(lineString)) {
+                return null;
+            }
+        }
+
         if(doesLineMatch) {
             IChatComponent component = chatComponent.createCopy();
 
@@ -354,6 +367,15 @@ public class ChatTab {
         }
 
         return null;
+    }
+
+    private boolean plainCheck(String text) {
+        for (String line : plainCheck) {
+            if (text.toLowerCase().contains(line.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean deleteMessageByHash(int hashCode) {

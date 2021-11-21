@@ -50,6 +50,13 @@ public class ChatManager {
         resetPrimaryChatBox();
     }
 
+    public GuiChatBox getPrimaryChatBox() {
+        if (primaryChatBox == null) {
+            resetPrimaryChatBox();
+        }
+        return primaryChatBox;
+    }
+
     private void resetPrimaryChatBox() {
         List<ChatTab> tabs = new ArrayList<>();
         tabs.add(new ChatTab("All").alwaysMatch());
